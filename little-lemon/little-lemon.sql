@@ -290,3 +290,20 @@ WHERE m.menu_id IN (
 );
 
 -- SELECT * FROM popular_menu_items;
+
+-- Exercise 2
+-- M2E2: Task 1
+
+DROP PROCEDURE IF EXISTS `GET_MAX_QUANTITY`;
+
+-- DELIMITER //
+
+CREATE PROCEDURE GET_MAX_QUANTITY ()
+BEGIN
+SELECT MAX(quantity) AS max_quantity_in_order FROM orders;
+END;
+
+-- //
+-- DELIMITER ;
+
+CALL GET_MAX_QUANTITY();

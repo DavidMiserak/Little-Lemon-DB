@@ -432,3 +432,62 @@ DELIMITER ;
 
 CALL ADD_VALID_BOOKING('2022-10-14', 1);
 CALL ADD_VALID_BOOKING('2022-10-14', 1);
+
+-- Exercise 4
+\! echo "Module 2 - Exercise 4"
+
+-- M2E4: Task 1
+\! echo "M2E4: Task 1"
+
+DROP PROCEDURE IF EXISTS add_booking;
+
+DELIMITER //
+
+CREATE PROCEDURE ADD_BOOKING (IN b_id INT, IN cust_id INT, IN b_date DATE, IN t_no INT)
+BEGIN
+    INSERT INTO bookings (booking_id, booking_date, table_no, customer_id, staff_id)
+    VALUES (b_id, b_date, t_no, cust_id, 2);
+    SELECT CONCAT('Booking ', b_id, ' added successfully') AS message;
+END;
+
+//
+DELIMITER ;
+
+CALL ADD_BOOKING(15, 2, '2022-10-15', 2);
+
+-- M2E4: Task 2
+\! echo "M2E4: Task 2"
+
+DROP PROCEDURE IF EXISTS update_booking;
+
+DELIMITER //
+
+CREATE PROCEDURE UPDATE_BOOKING (IN b_id INT, IN b_date DATE)
+BEGIN
+    UPDATE bookings
+    SET booking_date = b_date
+    WHERE booking_id = b_id;
+    SELECT CONCAT('Booking ', b_id, ' updated successfully') AS message;
+END;
+
+//
+
+CALL UPDATE_BOOKING(15, '2022-10-16');
+
+-- M2E4: Task 3
+\! echo "M2E4: Task 3"
+
+DROP PROCEDURE IF EXISTS cancel_booking;
+
+DELIMITER //
+
+CREATE PROCEDURE CANCEL_BOOKING (IN b_id INT)
+BEGIN
+    DELETE FROM bookings
+    WHERE booking_id = b_id;
+    SELECT CONCAT('Booking ', b_id, ' cancelled successfully') AS message;
+END;
+
+//
+
+CALL CANCEL_BOOKING(15);

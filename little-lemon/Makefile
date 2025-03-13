@@ -25,6 +25,23 @@ db-load: little-lemon.sql
 	--password=123456 \
 	< $<
 
+# Jupyter Notebook
+.PHONY: notebook-create-image
+notebook-create-image: Dockerfile
+	$(RUNTIME) build -t $(NAME)-notebook .
+
+.PHONY: notebook-start
+notebook-start: notebook-create-image
+	@echo "Starting Jupyter Notebook..."
+	@echo "Open http://localhost:8888/ in your browser"
+	$(RUNTIME) run --detach \
+	--name $(NAME)-notebook \
+	--network host \
+	-p 8888:8888 \
+	-v $(CURDIR):/app \
+	$(NAME)-notebook
+
 .PHONY: clean
 clean:
 	$(RUNTIME) rm -f $(NAME)-db
+	$(RUNTIME) rm -f $(NAME)-notebook

@@ -1,0 +1,6 @@
+# Filename: requirements.txt
+# Ptyhon version: 3.10
+
+jupyter==1.1.1
+mysql-connector==2.2.9
+mysql-connector-python==9.2.0

@@ -74,4 +74,8 @@ make jupyter-start
 
 ## Customer Sales Dashboard
 
-![Dashboard](img/M3E2T1-customer_sales.png)
+![Customer Sales Dashboard](img/M3E2T1-customer_sales.png)
+
+## Profit Dashboard
+
+![Profit Dashboard](img/M3E2T2-profit_chart.png)

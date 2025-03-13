@@ -1,3 +1,4 @@
+-- Module 1
 CREATE DATABASE IF NOT EXISTS `LittleLemonDB`;
 
 USE `LittleLemonDB`;
@@ -239,8 +240,10 @@ VALUES
 
 -- Module 2
 -- Exercise 1
+\! echo "Module 2 - Exercise 1"
 
 -- M2E1: Task 1
+\! echo "M2E1: Task 1"
 
 -- Create a view to display
 -- order_id, quantity, and total_cost from the orders table
@@ -253,11 +256,10 @@ SELECT
     total_cost
 FROM orders;
 
--- SELECT * FROM order_view LIMIT 5;
+SELECT * FROM order_view LIMIT 5;
 
 -- M2E1: Task 2
-
--- customer_id, full_name, order_id, total_cost, menu_name, entree_name
+\! echo "M2E1: Task 2"
 
 DROP VIEW IF EXISTS customer_order_view;
 
@@ -273,9 +275,10 @@ INNER JOIN orders AS o ON c.customer_id = o.customer_id
 INNER JOIN menu AS m ON o.menu_id = m.menu_id
 INNER JOIN entrees AS e ON m.entree_id = e.entree_id;
 
--- SELECT * FROM customer_order_view LIMIT 5;
+SELECT * FROM customer_order_view LIMIT 5;
 
 -- M2E1: Task 3
+\! echo "M2E1: Task 3"
 
 DROP VIEW IF EXISTS popular_menu_items;
 
@@ -289,26 +292,30 @@ WHERE m.menu_id IN (
     HAVING COUNT(o.order_id) > 2
 );
 
--- SELECT * FROM popular_menu_items;
+SELECT * FROM popular_menu_items;
 
 -- Exercise 2
+\! echo "Module 2 - Exercise 2"
+
 -- M2E2: Task 1
+\! echo "M2E2: Task 1"
 
 DROP PROCEDURE IF EXISTS `GET_MAX_QUANTITY`;
 
--- DELIMITER //
+DELIMITER //
 
 CREATE PROCEDURE GET_MAX_QUANTITY ()
 BEGIN
 SELECT MAX(quantity) AS max_quantity_in_order FROM orders;
 END;
 
--- //
--- DELIMITER ;
+//
+DELIMITER ;
 
--- CALL GET_MAX_QUANTITY();
+CALL GET_MAX_QUANTITY();
 
 -- M2E2: Task 2
+\! echo "M2E2: Task 2"
 
 -- Get order details by customer id via prepared statement
 
@@ -319,14 +326,15 @@ PREPARE get_order_details FROM
  FROM orders AS o
  WHERE o.customer_id = ?';
 
--- SET @customer_id = 1;
--- EXECUTE get_order_details USING @customer_id;
+SET @customer_id = 1;
+EXECUTE get_order_details USING @customer_id;
 
 -- M2E2: Task 3
+\! echo "M2E2: Task 3"
 
 DROP PROCEDURE IF EXISTS cancel_order;
 
--- DELIMITER //
+DELIMITER //
 
 CREATE PROCEDURE CANCEL_ORDER (IN id INT)
 BEGIN
@@ -337,14 +345,39 @@ WHERE order_id = id;
 SELECT CONCAT('Order ', id, ' has been cancelled.') AS message;
 END;
 
--- //
--- DELIMITER ;
+//
+DELIMITER ;
 
--- SET @cancel_order_id = 25;
+SET @cancel_order_id = 25;
 
 INSERT INTO orders
 (order_id, order_date, quantity, total_cost, customer_id, menu_id, staff_id)
 VALUES
 (@cancel_order_id, '2021-01-25', 2, 15.98, 1, 5, 2);
 
--- CALL cancel_order(@cancel_order_id);
+CALL cancel_order(@cancel_order_id);
+
+-- Exercise 3
+\! echo "Module 2 - Exercise 3"
+-- M2E3: Task 1
+\! echo "M2E3: Task 1"
+
+INSERT INTO bookings
+(
+    booking_id,
+    booking_date,
+    booking_time,
+    party_size,
+    table_no,
+    customer_id,
+    staff_id
+)
+VALUES
+(6, '2022-10-10', '18:00:00', 4, 5, 1, 2),
+(7, '2022-11-12', '18:00:00', 4, 3, 3, 2),
+(8, '2022-10-11', '18:00:00', 4, 2, 2, 2),
+(9, '2022-10-13', '18:00:00', 4, 2, 1, 2);
+
+SELECT booking_id, booking_date, table_no, customer_id
+FROM bookings
+WHERE booking_id IN (6, 7, 8, 9);

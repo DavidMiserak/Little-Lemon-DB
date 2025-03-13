@@ -3,6 +3,8 @@ CREATE DATABASE IF NOT EXISTS `LittleLemonDB`;
 USE `LittleLemonDB`;
 
 -- Create an ER diagram data model and implement it in MySQL
+
+--Dtop tables if they exist
 DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS delivery;
 DROP TABLE IF EXISTS orders;
@@ -114,6 +116,7 @@ VALUES
 -- Menu table
 CREATE TABLE menu (
     menu_id INT PRIMARY KEY,
+    menu_name VARCHAR(64),
     starter_id INT,
     entree_id INT,
     drink_id INT,
@@ -125,13 +128,19 @@ CREATE TABLE menu (
 );
 
 INSERT INTO menu
-(menu_id, starter_id, entree_id, drink_id, dessert_id)
+(menu_id, menu_name, starter_id, entree_id, drink_id, dessert_id)
 VALUES
-(1, 1, 1, 1, 1),
-(2, 2, 2, 2, 2),
-(3, 3, 3, 3, 3),
-(4, 4, 4, 4, 4),
-(5, 5, 5, 5, 5);
+(1, 'Menu 1', 1, 1, 1, 1),
+(2, 'Menu 2', 2, 2, 2, 2),
+(3, 'Menu 3', 3, 3, 3, 3),
+(4, 'Menu 4', 4, 4, 4, 4),
+(5, 'Menu 5', 5, 5, 5, 5),
+(6, 'Menu 6', 1, 2, 3, 4),
+(7, 'Menu 7', 2, 3, 4, 5),
+(8, 'Menu 8', 3, 4, 5, 1),
+(9, 'Menu 9', 4, 5, 1, 2),
+(10, 'Menu 10', 5, 1, 2, 3);
+
 
 -- Orders table
 CREATE TABLE orders (
@@ -154,7 +163,22 @@ VALUES
 (2, '2021-01-02', 1, 10.99, 2, 2, 3),
 (3, '2021-01-03', 3, 23.97, 3, 3, 4),
 (4, '2021-01-04', 4, 39.96, 4, 4, 1),
-(5, '2021-01-05', 2, 15.98, 1, 5, 2);
+(5, '2021-01-05', 2, 15.98, 1, 5, 2),
+(6, '2021-01-06', 1, 5.99, 2, 6, 3),
+(7, '2021-01-07', 3, 21.97, 3, 7, 4),
+(8, '2021-01-08', 4, 35.96, 4, 8, 1),
+(9, '2021-01-09', 2, 13.98, 1, 9, 2),
+(10, '2021-01-10', 1, 4.99, 2, 10, 3),
+(11, '2021-01-11', 3, 19.97, 3, 1, 4),
+(12, '2021-01-12', 4, 31.96, 4, 2, 1),
+(13, '2021-01-13', 2, 11.98, 1, 3, 2),
+(14, '2021-01-14', 1, 3.99, 2, 4, 3),
+(15, '2021-01-15', 3, 17.97, 3, 5, 4),
+(16, '2021-01-16', 4, 27.96, 4, 1, 1),
+(17, '2021-01-17', 2, 9.98, 1, 1, 2),
+(18, '2021-01-18', 1, 2.99, 2, 3, 3),
+(19, '2021-01-19', 3, 15.97, 3, 3, 4),
+(20, '2021-01-20', 4, 23.96, 4, 5, 1);
 
 -- Order Delivery table
 CREATE TABLE delivery (
@@ -212,3 +236,57 @@ VALUES
 (3, '2021-01-03', '20:00:00', 6, 3, 3, 4),
 (4, '2021-01-04', '21:00:00', 8, 4, 4, 1),
 (5, '2021-01-05', '22:00:00', 2, 5, 1, 2);
+
+-- Module 2
+-- Exercise 1
+
+-- M2E1: Task 1
+
+-- Create a view to display
+-- order_id, quantity, and total_cost from the orders table
+DROP VIEW IF EXISTS order_view;
+
+CREATE VIEW order_view AS
+SELECT
+    order_id,
+    quantity,
+    total_cost
+FROM orders;
+
+-- SELECT * FROM order_view LIMIT 5;
+
+-- M2E1: Task 2
+
+-- customer_id, full_name, order_id, total_cost, menu_name, entree_name
+
+DROP VIEW IF EXISTS customer_order_view;
+
+CREATE VIEW customer_order_view AS
+SELECT
+    c.customer_id,
+    o.order_id,
+    o.total_cost,
+    e.entree_name,
+    CONCAT(c.first_name, ' ', c.last_name) AS full_name
+FROM customers AS c
+INNER JOIN orders AS o ON c.customer_id = o.customer_id
+INNER JOIN menu AS m ON o.menu_id = m.menu_id
+INNER JOIN entrees AS e ON m.entree_id = e.entree_id;
+
+-- SELECT * FROM customer_order_view LIMIT 5;
+
+-- M2E1: Task 3
+
+DROP VIEW IF EXISTS popular_menu_items;
+
+CREATE VIEW popular_menu_items AS
+SELECT m.menu_name
+FROM menu AS m
+WHERE m.menu_id IN (
+    SELECT o.menu_id
+    FROM orders AS o
+    GROUP BY o.menu_id
+    HAVING COUNT(o.order_id) > 2
+);
+
+-- SELECT * FROM popular_menu_items;

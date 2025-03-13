@@ -79,3 +79,7 @@ make jupyter-start
 ## Profit Dashboard
 
 ![Profit Dashboard](img/M3E2T2-profit_chart.png)
+
+## Sales by Customer Dashboard
+
+![Sales by Customer Dashboard](img/M3E2T3-sales_bubble_chart.png)

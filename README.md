@@ -83,3 +83,7 @@ make jupyter-start
 ## Sales by Customer Dashboard
 
 ![Sales by Customer Dashboard](img/M3E2T3-sales_bubble_chart.png)
+
+## Cuisine Sales and Profits Dashboard
+
+![Cuisine Sales and Profits Dashboard](img/M3E2T4-cusine_sales_profits.png)

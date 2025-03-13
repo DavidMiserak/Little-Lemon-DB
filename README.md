@@ -67,3 +67,7 @@ make jupyter-start
 11. Open the `little-lemon.twb` workbook.
 
 12. Enjoy!
+
+## Entity Relationship Diagram
+
+![ERD](LittleLemonDM.png)

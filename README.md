@@ -87,3 +87,7 @@ make jupyter-start
 ## Cuisine Sales and Profits Dashboard
 
 ![Cuisine Sales and Profits Dashboard](img/M3E2T4-cusine_sales_profits.png)
+
+## Dual Dashboard
+
+![Dual Dashboard](img/M3E2T5-dashboard.png)

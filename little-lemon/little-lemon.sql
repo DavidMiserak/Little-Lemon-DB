@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS staff;
 
 -- Staff table
 CREATE TABLE staff (
-    staff_id INT PRIMARY KEY,
+    staff_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     staff_role VARCHAR(255),
@@ -37,7 +37,7 @@ VALUES
 
 -- Customers
 CREATE TABLE customers (
-    customer_id INT PRIMARY KEY,
+    customer_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     phone_number BIGINT
@@ -53,7 +53,7 @@ VALUES
 
 -- Menu items
 CREATE TABLE starters (
-    starter_id INT PRIMARY KEY,
+    starter_id INT PRIMARY KEY AUTO_INCREMENT,
     starter_name VARCHAR(64),
     starter_price DECIMAL(5, 2)
 );
@@ -69,7 +69,7 @@ VALUES
 
 
 CREATE TABLE entrees (
-    entree_id INT PRIMARY KEY,
+    entree_id INT PRIMARY KEY AUTO_INCREMENT,
     entree_name VARCHAR(64),
     entree_price DECIMAL(5, 2)
 );
@@ -84,7 +84,7 @@ VALUES
 (5, 'Pineapple Fried Rice', 9.99);
 
 CREATE TABLE drinks (
-    drink_id INT PRIMARY KEY,
+    drink_id INT PRIMARY KEY AUTO_INCREMENT,
     drink_name VARCHAR(64),
     drink_price DECIMAL(5, 2)
 );
@@ -99,7 +99,7 @@ VALUES
 (5, 'Lemonade', 2.99);
 
 CREATE TABLE desserts (
-    dessert_id INT PRIMARY KEY,
+    dessert_id INT PRIMARY KEY AUTO_INCREMENT,
     dessert_name VARCHAR(64),
     dessert_price DECIMAL(5, 2)
 );
@@ -116,7 +116,7 @@ VALUES
 
 -- Menu table
 CREATE TABLE menu (
-    menu_id INT PRIMARY KEY,
+    menu_id INT PRIMARY KEY AUTO_INCREMENT,
     menu_name VARCHAR(64),
     starter_id INT,
     entree_id INT,
@@ -145,7 +145,7 @@ VALUES
 
 -- Orders table
 CREATE TABLE orders (
-    order_id INT PRIMARY KEY,
+    order_id INT PRIMARY KEY AUTO_INCREMENT,
     order_date DATE,
     quantity INT,
     total_cost DECIMAL(10, 2),
@@ -183,7 +183,7 @@ VALUES
 
 -- Order Delivery table
 CREATE TABLE delivery (
-    delivery_id INT PRIMARY KEY,
+    delivery_id INT PRIMARY KEY AUTO_INCREMENT,
     order_id INT,
     delivery_date DATE,
     delivery_status VARCHAR(64),
@@ -210,7 +210,7 @@ VALUES
 
 -- Bookings table
 CREATE TABLE bookings (
-    booking_id INT PRIMARY KEY,
+    booking_id INT PRIMARY KEY AUTO_INCREMENT,
     booking_date DATE,
     booking_time TIME,
     party_size INT,
@@ -381,3 +381,54 @@ VALUES
 SELECT booking_id, booking_date, table_no, customer_id
 FROM bookings
 WHERE booking_id IN (6, 7, 8, 9);
+
+-- M2E3: Task 2
+\! echo "M2E3: Task 2"
+
+DROP PROCEDURE IF EXISTS check_booking;
+
+DELIMITER //
+
+CREATE PROCEDURE CHECK_BOOKING (IN table_id INT)
+BEGIN
+  SELECT CASE
+    WHEN EXISTS (
+      SELECT 1
+      FROM bookings
+      WHERE table_no = table_id
+    ) THEN CONCAT('Table ', table_id, ' is already booked')
+    ELSE CONCAT('Table ', table_id, ' is available')
+  END AS message;
+END;
+
+//
+DELIMITER ;
+
+CALL CHECK_BOOKING(1);
+
+-- M2E3: Task 3
+\! echo "M2E3: Task 3"
+
+DROP PROCEDURE IF EXISTS add_valid_booking;
+
+DELIMITER //
+
+CREATE PROCEDURE ADD_VALID_BOOKING ( IN b_date DATE, IN t_no INT )
+BEGIN
+    DECLARE msg INT;
+    SELECT COUNT(*) INTO msg FROM bookings WHERE booking_date = b_date AND table_no = t_no;
+
+    IF msg = 0 THEN
+        INSERT INTO bookings (booking_date, table_no, customer_id, staff_id)
+        VALUES (b_date, t_no, 1, 2);
+        SELECT 'Booking added successfully' AS message;
+    ELSE
+        SELECT CONCAT('Table ', t_no, ' is already booked - booking cancelled') AS message;
+    END IF;
+END;
+
+//
+DELIMITER ;
+
+CALL ADD_VALID_BOOKING('2022-10-14', 1);
+CALL ADD_VALID_BOOKING('2022-10-14', 1);

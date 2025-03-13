@@ -70,4 +70,8 @@ make jupyter-start
 
 ## Entity Relationship Diagram
 
-![ERD](LittleLemonDM.png)
+![ERD](img/LittleLemonDM.png)
+
+## Customer Sales Dashboard
+
+![Dashboard](img/M3E2T1-customer_sales.png)

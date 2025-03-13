@@ -1,0 +1,17 @@
+[tool.sqlfluff.core]
+dialect = "mysql"
+exclude_rules = "L031, L016, L034"
+ignore = "templating"
+
+[tool.sqlfluff.indentation]
+indented_joins = false
+indented_using_on = false
+
+[tool.sqlfluff.rules]
+tab_space_size = 4
+
+[tool.sqlfluff.rules.L010]
+capitalisation_policy = "lower"
+
+[tool.sqlfluff.rules.L016]
+max_line_length = 125

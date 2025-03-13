@@ -60,9 +60,9 @@ make jupyter-start
 10. Connect to the MySQL database:
 - Server: `localhost`
 - Port: `3306`
-- Database: `little_lemon`
+- Database: `LittleLemnDB`
 - User: `root`
-- Password: `password`
+- Password: `123456`
 
 11. Open the `little-lemon.twb` workbook.
 

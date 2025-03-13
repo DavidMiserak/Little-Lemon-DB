@@ -321,3 +321,30 @@ PREPARE get_order_details FROM
 
 -- SET @customer_id = 1;
 -- EXECUTE get_order_details USING @customer_id;
+
+-- M2E2: Task 3
+
+DROP PROCEDURE IF EXISTS cancel_order;
+
+-- DELIMITER //
+
+CREATE PROCEDURE CANCEL_ORDER (IN id INT)
+BEGIN
+-- Cancel the order
+DELETE FROM orders
+WHERE order_id = id;
+-- Display a message
+SELECT CONCAT('Order ', id, ' has been cancelled.') AS message;
+END;
+
+-- //
+-- DELIMITER ;
+
+-- SET @cancel_order_id = 25;
+
+INSERT INTO orders
+(order_id, order_date, quantity, total_cost, customer_id, menu_id, staff_id)
+VALUES
+(@cancel_order_id, '2021-01-25', 2, 15.98, 1, 5, 2);
+
+-- CALL cancel_order(@cancel_order_id);

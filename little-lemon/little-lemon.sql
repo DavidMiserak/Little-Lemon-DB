@@ -306,4 +306,18 @@ END;
 -- //
 -- DELIMITER ;
 
-CALL GET_MAX_QUANTITY();
+-- CALL GET_MAX_QUANTITY();
+
+-- M2E2: Task 2
+
+-- Get order details by customer id via prepared statement
+
+DROP PROCEDURE IF EXISTS get_order_details;
+
+PREPARE get_order_details FROM
+'SELECT o.order_id, o.quantity, o.total_cost
+ FROM orders AS o
+ WHERE o.customer_id = ?';
+
+-- SET @customer_id = 1;
+-- EXECUTE get_order_details USING @customer_id;

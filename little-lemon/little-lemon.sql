@@ -471,6 +471,7 @@ BEGIN
 END;
 
 //
+DELIMITER ;
 
 CALL UPDATE_BOOKING(15, '2022-10-16');
 
@@ -491,3 +492,13 @@ END;
 //
 
 CALL CANCEL_BOOKING(15);
+
+-- Add some high spending orders
+INSERT INTO orders
+(order_id, order_date, quantity, total_cost, customer_id, menu_id, staff_id)
+VALUES
+(21, '2021-01-21', 5, 49.95, 1, 1, 2),
+(22, '2021-01-22', 6, 59.94, 2, 2, 3),
+(23, '2021-01-23', 7, 69.93, 3, 3, 4),
+(24, '2021-01-24', 8, 79.92, 4, 4, 1),
+(25, '2021-01-25', 9, 89.91, 1, 5, 2);
